@@ -14,6 +14,9 @@ var surfaceOptions = [
   'currentFrame', 'maxPitch',
 ];
 
+// Store a handy reference to the SVG namespace
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
 class Surface {
 
   // Create a new Surface
@@ -80,13 +83,14 @@ class Surface {
 
   // Render the surface into its element
   render() {
+
+    // If there's no cached data, then we must compute it first
     if (!this._cache) {
       this.computeData();
     }
-    var data = this._cache;
 
     var plane = createPlane({
-      data: data[0],
+      data: this._cache[0],
       heightFn(d) { return d; },
       zoom: 1,
       height: this.height,
@@ -94,7 +98,11 @@ class Surface {
       rotationMatrix: this._rotationMatrix
     });
 
-    this._renderCanvasSurface(plane);
+    if (this._type === 'canvas') {
+      this._renderCanvasSurface(plane);
+    } else {
+      this._renderSvgSurface(plane);
+    }
 
     return this;
   }
@@ -127,7 +135,7 @@ class Surface {
   // Create a new element, given a tagName
   _createElement(tagName) {
     if (tagName === 'svg') {
-      return document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      return this._createSvgElement('svg');
     } else if (tagName === 'canvas') {
       return document.createElement('canvas');
     } else {
@@ -135,7 +143,7 @@ class Surface {
     }
   }
 
-  // Render a surface as a Canvas
+  // Render the Surface as a Canvas
   _renderCanvasSurface(plane) {
     var context = this.el.getContext('2d');
 
@@ -156,6 +164,36 @@ class Surface {
       context.stroke();
       context.fill();
     });
+  }
+
+  // Generate an element in the SVG namespace
+  _createSvgElement(tagName) {
+    return document.createElementNS(SVG_NS, tagName);
+  }
+
+  // Set an attribute on an element in the SVG namespace
+  _setSvgAttribute(el, attr, val) {
+    el.setAttributeNS(null, attr, val);
+  }
+
+  // Render the Surface as an SVG
+  _renderSvgSurface(plane) {
+    var p;
+    var path = this._createSvgElement('path');
+    plane.forEach(a => {
+      p = a.path;
+      this._setSvgAttribute(path, 'd', this._generatePathString(a.path));
+      this._setSvgAttribute(path, 'fill', this.colorFn(a.avg));
+    });
+    this.el.appendChild(p);
+  }
+
+  // Generate the `d` attr value for an SVG path
+  _generatePathString(path) {
+    return `M${path.moveTo[0]}, ${path.moveTo[1]}
+      L${path.pointOne[0]}, ${path.pointOne[1]}
+      L${path.pointTwo[0]}, ${path.pointTwo[1]}
+      L${path.pointThree[0]}, ${path.pointThree[1]}`;
   }
 }
 

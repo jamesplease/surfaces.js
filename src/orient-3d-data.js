@@ -2,6 +2,7 @@ import scaleHeight from './scale-height';
 import twoRotations from 'two-rotations';
 import mapPoints from './map-points';
 
+// Scale the data according to the dimensions of the visualization
 export default function(options) {
   var { data, heightFn, zoom, width, rotationMatrix } = options;
   var heights = scaleHeight(data, heightFn);

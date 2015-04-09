@@ -1,6 +1,7 @@
 import orient3dData from './orient-3d-data';
 import mapPoints from './map-points';
 
+// Generate the data necessary to render our surface
 export default function(options) {
   var originalData = options.data;
   var data = orient3dData({
@@ -14,11 +15,11 @@ export default function(options) {
   var offsetY = options.height / 2;
   var planes = [];
 
-  // Our four values that make up the heights
+  // The four values that make up the heights for this piece
   var z1, z2, z3, z4, zAvg;
   mapPoints(data, (t, x, y, xlength, ylength) => {
 
-    // We bail if we're at the second-to-last point, because each plane
+    // Bail when at the second-to-last point, because each plane
     // requires connecting a point with the point ahead of it
     if (x === xlength - 1 || y === ylength - 1) { return; }
 

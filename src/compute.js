@@ -7,7 +7,7 @@ export default function(options = {}) {
   var xInterval = options.xInterval;
   var startTime = options.startTime;
 
-  // Our space-time coordinates
+  // The space-time coordinates
   var coordinates = [];
 
   // Loop through all of the time values

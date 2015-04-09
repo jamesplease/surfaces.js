@@ -1,4 +1,4 @@
-// Transform the data with a map
+// Transform 3-d `data` with `mapFn`
 export default function(data, mapFn) {
   var t, result = [];
 

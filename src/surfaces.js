@@ -18,6 +18,9 @@ class Surface {
 
   // Create a new Surface
   constructor(options) {
+
+    // Pick out the valid options from the passed-in options,
+    // then fill in the defaults.
     _.defaults(this, _.pick(options, surfaceOptions), {
       width: 300,
       height: 300,
@@ -34,14 +37,16 @@ class Surface {
       maxPitch: Math.PI / 2
     });
 
-    // A reference to the rotation matrix
+    // Create and set the rotation matrix
     this._rotationMatrix = [];
-
-    // Generate our initial rotation matrix
     this._generateRotation();
 
+    // Make sure that the Surface has an associated DOM element,
+    // then determine if it's an SVG Surface or a Canvas Surface
     this._ensureElement();
     this._setType();
+
+    // Finally, call initialize.
     this.initialize(...arguments);
   }
 
@@ -49,7 +54,7 @@ class Surface {
   // the instantiation of a Surface
   initialize() {}
 
-  // Generate, and cache, our data
+  // Generate, and cache, the Surface's data
   computeData() {
     this._cache = compute({
       fn: this.fn,
@@ -67,7 +72,7 @@ class Surface {
   orient(orientation) {
     _.extend(this, _.pick(orientation, ['yaw', 'pitch']));
 
-    // Ensure that the pitch doesn't go beyond our maximum
+    // Ensure that the pitch is within the limits
     this.pitch = Math.max(-this.maxPitch, Math.min(this.maxPitch, this.pitch));
     this._generateRotation();
     return this;
@@ -94,7 +99,7 @@ class Surface {
     return this;
   }
 
-  // Set our rotation matrix
+  // Set the rotation matrix
   _generateRotation() {
     this._rotationMatrix = twoRotations.generateMatrix(this.yaw, this.pitch);
   }
@@ -137,7 +142,7 @@ class Surface {
     // Clear the canvas
     context.clearRect (0, 0, this.el.width, this.el.height);
 
-    // Loop through our data, drawing each piece of the surface
+    // Loop through the data, drawing each piece of the surface
     var p;
     plane.forEach(a => {
       p = a.path;

@@ -6,7 +6,7 @@ export default function(options) {
   var originalData = options.data;
   var data = orient3dData({
     data: options.data,
-    heightFn: options.heightFn,
+    zScale: options.zScale,
     zoom: options.zoom,
     width: options.width,
     rotationMatrix: options.rotationMatrix

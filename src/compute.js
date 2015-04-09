@@ -3,8 +3,8 @@
 export default function(options = {}) {
   var maxTime = options.maxTime !== undefined ? options.maxTime : 0;
   var spaceStep = options.spaceStep ? options.spaceStep : 1;
-  var yInterval = options.yInterval;
-  var xInterval = options.xInterval;
+  var yDomain = options.yDomain;
+  var xDomain = options.xDomain;
   var startTime = options.startTime;
 
   // The space-time coordinates
@@ -17,12 +17,12 @@ export default function(options = {}) {
     coordinates.push(tValues);
 
     // First loop x,
-    for (var x = xInterval[0]; x <= xInterval[1]; x++) {
+    for (var x = xDomain[0]; x <= xDomain[1]; x++) {
       var xValues = [];
       tValues.push(xValues);
 
       // then loop y,
-      for (var y = yInterval[0]; y <= yInterval[1]; y++) {
+      for (var y = yDomain[0]; y <= yDomain[1]; y++) {
 
         // and finally call the function, passing
         // the x, y, and t values for this point

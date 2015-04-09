@@ -10,7 +10,10 @@ var surfaceOptions = [
   'width', 'height',
   'colorFn',
   'zoom', 'yaw', 'pitch',
-  'yInterval', 'xInterval', 'zInterval',
+  'xyDomain', 'xyResolution', 'xyScale',
+  'yDomain', 'yResolution', 'yScale',
+  'xDomain', 'xResolution', 'xScale',
+  'range', 'zScale',
   'currentFrame', 'maxPitch',
 ];
 
@@ -32,9 +35,10 @@ class Surface {
       yaw: 0.5,
       colorFn() { return '#333'; },
       pitch: 0.5,
-      yInterval: [-10, 10],
-      xInterval: [-10, 10],
-      zInterval: [0, 10],
+      yDomain: [-10, 10],
+      xDomain: [-10, 10],
+      range: [0, 10],
+      zScale: 1,
       currentFrame: 0,
       fn: Surface.spacetimeOrigin,
       maxPitch: Math.PI / 2
@@ -63,8 +67,8 @@ class Surface {
       fn: this.fn,
       startTime: this.currentFrame,
       maxTime: this.currentFrame,
-      xInterval: this.xInterval,
-      yInterval: this.yInterval,
+      xDomain: this.xDomain,
+      yDomain: this.yDomain,
       spaceStep: 1
     });
 
@@ -91,8 +95,8 @@ class Surface {
 
     var plane = createPlane({
       data: this._cache[0],
-      heightFn(d) { return d; },
       zoom: 1,
+      zScale: this.zScale,
       height: this.height,
       width: this.width,
       rotationMatrix: this._rotationMatrix
@@ -182,14 +186,14 @@ class Surface {
     var path = this._createSvgElement('path');
     plane.forEach(a => {
       p = a.path;
-      this._setSvgAttribute(path, 'd', this._generatePathString(a.path));
+      this._setSvgAttribute(path, 'd', this._generateDAttr(a.path));
       this._setSvgAttribute(path, 'fill', this.colorFn(a.avg));
     });
     this.el.appendChild(p);
   }
 
   // Generate the `d` attr value for an SVG path
-  _generatePathString(path) {
+  _generateDAttr(path) {
     return `M${path.moveTo[0]}, ${path.moveTo[1]}
       L${path.pointOne[0]}, ${path.pointOne[1]}
       L${path.pointTwo[0]}, ${path.pointTwo[1]}

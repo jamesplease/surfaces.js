@@ -1,16 +1,9 @@
-import orient3dData from './orient-3d-data';
 import mapPoints from './map-points';
 
 // Generate the data necessary to render our surface
 export default function(options) {
-  var originalData = options.data;
-  var data = orient3dData({
-    data: options.data,
-    zScale: options.zScale,
-    zoom: options.zoom,
-    width: options.width,
-    rotationMatrix: options.rotationMatrix
-  });
+  var originalData = options.originalData;
+  var data = options.data;
   var offsetX = options.width / 2;
   var offsetY = options.height / 2;
   var planes = [];

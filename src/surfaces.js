@@ -1,7 +1,8 @@
 import _ from 'underscore';
 import twoRotations from 'two-rotations';
-import compute from './compute';
-import createPlane from './create-plane';
+import compute from './util/compute';
+import mapDataToViewport from './util/map-data-to-viewport';
+import generateVisData from './util/generate-vis-data';
 
 // The options that can be passed into
 // a new Surface instance
@@ -93,19 +94,30 @@ class Surface {
       this.computeData();
     }
 
-    var plane = createPlane({
-      data: this._cache[0],
-      zoom: 1,
+    // Get the data for frame that we're rendering
+    var data = this._cache[0];
+
+    // Map that data to the viewport
+    var mappedData = mapDataToViewport({
+      data: data,
       zScale: this.zScale,
-      height: this.height,
+      zoom: this.zoom,
       width: this.width,
       rotationMatrix: this._rotationMatrix
     });
 
+    // Generate the data necessary to visualize the surface
+    var visData = generateVisData({
+      originalData: data,
+      data: mappedData,
+      height: this.height,
+      width: this.width
+    });
+
     if (this._type === 'canvas') {
-      this._renderCanvasSurface(plane);
+      this._renderCanvasSurface(visData);
     } else {
-      this._renderSvgSurface(plane);
+      this._renderSvgSurface(visData);
     }
 
     return this;
@@ -148,7 +160,7 @@ class Surface {
   }
 
   // Render the Surface as a Canvas
-  _renderCanvasSurface(plane) {
+  _renderCanvasSurface(visData) {
     var context = this.el.getContext('2d');
 
     // Clear the canvas
@@ -156,7 +168,7 @@ class Surface {
 
     // Loop through the data, drawing each piece of the surface
     var p;
-    plane.forEach(a => {
+    visData.forEach(a => {
       p = a.path;
       context.beginPath();
       context.fillStyle = this.colorFn(a.avg);
@@ -181,10 +193,10 @@ class Surface {
   }
 
   // Render the Surface as an SVG
-  _renderSvgSurface(plane) {
+  _renderSvgSurface(visData) {
     var p;
     var path = this._createSvgElement('path');
-    plane.forEach(a => {
+    visData.forEach(a => {
       p = a.path;
       this._setSvgAttribute(path, 'd', this._generateDAttr(a.path));
       this._setSvgAttribute(path, 'fill', this.colorFn(a.avg));

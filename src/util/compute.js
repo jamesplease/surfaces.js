@@ -4,7 +4,6 @@ import LinearScale from './linear-scale';
 // from the Surface's `fn`
 export default function(options = {}) {
   var maxTime = options.maxTime !== undefined ? options.maxTime : 0;
-  var spaceStep = options.spaceStep ? options.spaceStep : 1;
   var yDomain = options.yDomain;
   var xDomain = options.xDomain;
   var xResolution = options.xResolution;
@@ -43,8 +42,7 @@ export default function(options = {}) {
         xValues.push(options.fn(
           xLinearScale.transformTo(x),
           yLinearScale.transformTo(y),
-          t,
-          spaceStep));
+          t));
       }
     }
   }

@@ -39,6 +39,7 @@ class Surface {
 
       xyDomain: [-10, 10],
       xyResolution: 30,
+      xyScale: 300,
 
       range: [-10, 10],
       zScale: 1,
@@ -73,8 +74,7 @@ class Surface {
       xDomain: this.xDomain || this.xyDomain,
       xResolution: this.xResolution || this.xyResolution,
       yDomain: this.yDomain || this.xyDomain,
-      yResolution: this.yResolution || this.xyResolution,
-      spaceStep: 1
+      yResolution: this.yResolution || this.xyResolution
     });
 
     return this;
@@ -105,9 +105,12 @@ class Surface {
     var mappedData = mapDataToViewport({
       data: data,
       range: this.range,
+      xScale: this.xScale || this.xyScale,
+      yScale: this.yScale || this.xyScale,
+      xResolution: this.xResolution || this.xyResolution,
+      yResolution: this.yResolution || this.xyResolution,
       zScale: this.zScale,
       zoom: this.zoom,
-      width: this.width,
       rotationMatrix: this._rotationMatrix
     });
 

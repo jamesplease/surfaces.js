@@ -6,6 +6,7 @@ import mapPoints from './map-points';
 export default function(options = {}) {
   var { originalData, data, width, height, range, zScale } = options;
 
+  // Approximate the midway point of the visualization
   var offsetX = width / 2;
 
   // Center the visualization within the available space

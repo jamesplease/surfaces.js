@@ -121,7 +121,8 @@ class Surface {
       height: this.height,
       width: this.width,
       range: this.range,
-      zScale: this.zScale
+      zScale: this.zScale,
+      pitch: this.pitch
     });
 
     if (this._type === 'canvas') {

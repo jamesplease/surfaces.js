@@ -1,11 +1,13 @@
 import mapPoints from './map-points';
 
-// Generate the data necessary to render our surface
-export default function(options) {
-  var originalData = options.originalData;
-  var data = options.data;
-  var offsetX = options.width / 2;
-  var offsetY = options.height / 2;
+// Generate the data necessary to render the visualization. Returns
+// an object that can be used for things like drawing the surface as
+// a canvas/svg, and applying color to it.
+export default function(options = {}) {
+  var { originalData, data, width, height, range } = options;
+
+  var offsetX = width / 2;
+  var offsetY = height / 2;
   var planes = [];
 
   // The four values that make up the heights for this piece
@@ -16,10 +18,6 @@ export default function(options) {
     // requires connecting a point with the point ahead of it
     if (x === xlength - 1 || y === ylength - 1) { return; }
 
-    // This is the apparent distance of the point from the screen.
-    // 'Deeper' points are further back
-    var depth = data[x][y][2] + data[x+1][y][2] + data[x+1][y+1][2] + data[x][y+1][2];
-
     // Get the average height for this plane; later used for things like
     // the color function
     z1 = originalData[x][y];
@@ -27,6 +25,17 @@ export default function(options) {
     z3 = originalData[x+1][y+1];
     z4 = originalData[x][y+1];
     zAvg = 0.25 * (z1 + z2 + z3 + z4);
+
+    var min = range[0];
+    var max = range[1];
+
+    // Ignore points above or below the max or min
+    if (z1 > max || z2 > max || z3 > max || z4 > max) { return; }
+    if (z1 < min || z2 < min || z3 < min || z4 < min) { return; }
+
+    // This is the apparent distance of the point from the screen.
+    // 'Deeper' points are further back
+    var depth = data[x][y][2] + data[x+1][y][2] + data[x+1][y+1][2] + data[x][y+1][2];
 
     // Create planes by connecting each point with its neighboring points
     planes.push({

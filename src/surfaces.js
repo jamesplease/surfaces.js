@@ -38,7 +38,7 @@ class Surface {
       pitch: 0.5,
       yDomain: [-10, 10],
       xDomain: [-10, 10],
-      range: [0, 10],
+      range: [-10, 10],
       zScale: 1,
       currentFrame: 0,
       fn: Surface.spacetimeOrigin,
@@ -100,6 +100,7 @@ class Surface {
     // Map that data to the viewport
     var mappedData = mapDataToViewport({
       data: data,
+      range: this.range,
       zScale: this.zScale,
       zoom: this.zoom,
       width: this.width,
@@ -111,7 +112,8 @@ class Surface {
       originalData: data,
       data: mappedData,
       height: this.height,
-      width: this.width
+      width: this.width,
+      range: this.range
     });
 
     if (this._type === 'canvas') {

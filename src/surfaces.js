@@ -36,8 +36,10 @@ class Surface {
       yaw: 0.5,
       colorFn() { return '#333'; },
       pitch: 0.5,
-      yDomain: [-10, 10],
-      xDomain: [-10, 10],
+
+      xyDomain: [-10, 10],
+      xyResolution: 30,
+
       range: [-10, 10],
       zScale: 1,
       currentFrame: 0,
@@ -68,8 +70,10 @@ class Surface {
       fn: this.fn,
       startTime: this.currentFrame,
       maxTime: this.currentFrame,
-      xDomain: this.xDomain,
-      yDomain: this.yDomain,
+      xDomain: this.xDomain || this.xyDomain,
+      xResolution: this.xResolution || this.xyResolution,
+      yDomain: this.yDomain || this.xyDomain,
+      yResolution: this.yResolution || this.xyResolution,
       spaceStep: 1
     });
 
@@ -113,7 +117,8 @@ class Surface {
       data: mappedData,
       height: this.height,
       width: this.width,
-      range: this.range
+      range: this.range,
+      zScale: this.zScale
     });
 
     if (this._type === 'canvas') {

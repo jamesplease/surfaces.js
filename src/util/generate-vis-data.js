@@ -4,10 +4,13 @@ import mapPoints from './map-points';
 // an object that can be used for things like drawing the surface as
 // a canvas/svg, and applying color to it.
 export default function(options = {}) {
-  var { originalData, data, width, height, range } = options;
+  var { originalData, data, width, height, range, zScale } = options;
 
   var offsetX = width / 2;
-  var offsetY = height / 2;
+
+  // Center the visualization within the available space
+  var offsetY = height - 0.5 * (height - zScale);
+
   var planes = [];
 
   // The four values that make up the heights for this piece

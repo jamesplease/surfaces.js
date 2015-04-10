@@ -19,7 +19,7 @@ export default function(options) {
     // z value to be along the negative y-axis
     orientedPoint = [
       (x - xlength / 2) / (xlength * 1.41) * width * zoom,
-      -zLinearScale.transform(data[x][y]) * zoom,
+      -zLinearScale.transformTo(data[x][y]) * zoom,
       (y - ylength / 2) / (ylength * 1.41) * width * zoom
     ];
 

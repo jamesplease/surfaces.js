@@ -15,8 +15,13 @@ export default class Scale {
     this._range = options.range;
   }
 
-  transform(val) {
-    var height = percentFromVal(this._domain, val);
-    return valFromPercent(this._range, height);
+  transformTo(val) {
+    var p = percentFromVal(this._domain, val);
+    return valFromPercent(this._range, p);
+  }
+
+  transformFrom(val) {
+    var p = percentFromVal(this._range, val);
+    return valFromPercent(this._domain, p);
   }
 }

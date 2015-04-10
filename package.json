@@ -72,6 +72,7 @@
     ]
   },
   "dependencies": {
+    "lodash": "^3.6.0",
     "two-rotations": "0.0.2"
   }
 }

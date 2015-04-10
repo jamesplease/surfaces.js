@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import _ from 'lodash';
 import twoRotations from 'two-rotations';
 import compute from './util/compute';
 import mapDataToViewport from './util/map-data-to-viewport';

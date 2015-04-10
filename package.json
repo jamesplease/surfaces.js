@@ -1,7 +1,7 @@
 {
-  "name": "babel-library-boilerplate",
-  "version": "3.1.0",
-  "description": "Author libraries in ES6 for Node and the browser.",
+  "name": "surfaces",
+  "version": "0.0.1",
+  "description": "Visualize multivariable functions in the browser.",
   "main": "dist/surfaces.js",
   "scripts": {
     "test": "gulp",
@@ -11,24 +11,27 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/babel/babel-library-boilerplate.git"
+    "url": "https://github.com/jmeas/surfaces.js.git"
   },
   "keywords": [
-    "boilerplate",
-    "es6",
-    "node",
-    "starter",
-    "kit",
-    "transpile",
-    "6to5",
-    "babel"
+    "math",
+    "mathematics",
+    "functions",
+    "function",
+    "multivariable",
+    "variable",
+    "visualization",
+    "manifold",
+    "surface",
+    "calculus",
+    "physics"
   ],
   "author": "Jmeas",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/babel/babel-library-boilerplate/issues"
+    "url": "https://github.com/jmeas/surfaces.js/issues"
   },
-  "homepage": "https://github.com/babel/babel-library-boilerplate",
+  "homepage": "https://github.com/jmeas/surfaces.js",
   "devDependencies": {
     "babel": "^5.0.0",
     "babelify": "^6.0.0",

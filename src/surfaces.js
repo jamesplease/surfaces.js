@@ -11,6 +11,7 @@ var surfaceOptions = [
   'width', 'height',
   'colorFn',
   'zoom', 'yaw', 'pitch',
+  'tResolution', 'currentFrame',
   'xyDomain', 'xyResolution', 'xyScale',
   'yDomain', 'yResolution', 'yScale',
   'xDomain', 'xResolution', 'xScale',
@@ -41,9 +42,11 @@ class Surface {
       xyResolution: 30,
       xyScale: 300,
 
+      tResolution: 1,
+      currentFrame: 0,
+
       range: [-10, 10],
       zScale: 1,
-      currentFrame: 0,
       fn: Surface.spacetimeOrigin,
       maxPitch: Math.PI / 2
     });
@@ -91,7 +94,21 @@ class Surface {
   }
 
   // Render the surface into its element
-  render() {
+  renderFrame(frame) {
+
+    frame = typeof frame === 'undefined' ? this.currentFrame : frame;
+    this.currentFrame = frame;
+    var animate = false;
+    var loop = false;
+    var startFrame = frame;
+    var endFrame;
+
+    if (typeof frame === 'object') {
+      animate = true;
+      loop = frame.loop;
+      startFrame = frame.from;
+      endFrame = frame.to;
+    }
 
     // If there's no cached data, then we must compute it first
     if (!this._cache) {
@@ -99,7 +116,7 @@ class Surface {
     }
 
     // Get the data for frame that we're rendering
-    var data = this._cache[0];
+    var data = this._cache[frame];
 
     // Map that data to the viewport
     var mappedData = mapDataToViewport({
@@ -175,7 +192,7 @@ class Surface {
     var context = this.el.getContext('2d');
 
     // Clear the canvas
-    context.clearRect (0, 0, this.el.width, this.el.height);
+    this._clearCanvas(context);
 
     // Loop through the data, drawing each piece of the surface
     var p;
@@ -203,16 +220,28 @@ class Surface {
     el.setAttributeNS(null, attr, val);
   }
 
+  _clearCanvas(context) {
+    context.clearRect(0, 0, this.el.width, this.el.height);
+  }
+
+  // Empty out the svg
+  _clearSvg() {
+    while (this.el.firstChild) {
+      this.el.removeChild(this.el.firstChild);
+    }
+  }
+
   // Render the Surface as an SVG
   _renderSvgSurface(visData) {
-    var p;
-    var path = this._createSvgElement('path');
+    this._clearSvg();
+    var p, path;
     visData.forEach(a => {
       p = a.path;
+      path = this._createSvgElement('path');
       this._setSvgAttribute(path, 'd', this._generateDAttr(a.path));
       this._setSvgAttribute(path, 'fill', this.colorFn(a.avg));
+      this.el.appendChild(path);
     });
-    this.el.appendChild(p);
   }
 
   // Generate the `d` attr value for an SVG path

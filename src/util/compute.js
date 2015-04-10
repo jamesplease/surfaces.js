@@ -4,11 +4,7 @@ import LinearScale from './linear-scale';
 // from the Surface's `fn`
 export default function(options = {}) {
   var maxTime = options.maxTime !== undefined ? options.maxTime : 0;
-  var yDomain = options.yDomain;
-  var xDomain = options.xDomain;
-  var xResolution = options.xResolution;
-  var yResolution = options.yResolution;
-  var startTime = options.startTime;
+  var { yDomain, xDomain, xResolution, yResolution, startTime } = options;
 
   var xLinearScale = new LinearScale({
     domain: [0, xResolution],

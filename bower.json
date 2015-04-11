@@ -1,0 +1,35 @@
+{
+  "name": "surfaces",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jmeas/surfaces.js",
+  "authors": [
+    "Jmeas <jellyes2@gmail.com>"
+  ],
+  "description": "Visualize multivariable functions in the browser.",
+  "main": "dist/surfaces.js",
+  "keywords": [
+    "math",
+    "mathematics",
+    "functions",
+    "function",
+    "multivariable",
+    "variable",
+    "visualization",
+    "manifold",
+    "surface",
+    "calculus",
+    "physics"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "~3.6.0",
+    "two-rotations": "~0.0.2"
+  }
+}

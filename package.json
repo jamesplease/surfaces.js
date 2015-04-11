@@ -1,0 +1,81 @@
+{
+  "name": "surfaces",
+  "version": "0.0.1",
+  "description": "Visualize multivariable functions in the browser.",
+  "main": "dist/surfaces.js",
+  "scripts": {
+    "test": "gulp",
+    "test-browser": "gulp test-browser",
+    "build": "gulp build",
+    "coverage": "gulp coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmeas/surfaces.js.git"
+  },
+  "keywords": [
+    "math",
+    "mathematics",
+    "functions",
+    "function",
+    "multivariable",
+    "variable",
+    "visualization",
+    "manifold",
+    "surface",
+    "calculus",
+    "physics"
+  ],
+  "author": "Jmeas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmeas/surfaces.js/issues"
+  },
+  "homepage": "https://github.com/jmeas/surfaces.js",
+  "devDependencies": {
+    "babel": "^5.0.0",
+    "babelify": "^6.0.0",
+    "browserify": "^8.1.1",
+    "chai": "^2.0.0",
+    "del": "^1.1.1",
+    "esperanto": "^0.6.7",
+    "glob": "^4.3.5",
+    "gulp": "^3.8.10",
+    "gulp-babel": "^5.0.0",
+    "gulp-file": "^0.2.0",
+    "gulp-filter": "^2.0.0",
+    "gulp-istanbul": "^0.6.0",
+    "gulp-jscs": "^1.4.0",
+    "gulp-jshint": "^1.9.0",
+    "gulp-livereload": "^3.4.0",
+    "gulp-load-plugins": "^0.8.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-notify": "^2.1.0",
+    "gulp-plumber": "^0.6.6",
+    "gulp-rename": "^1.2.0",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-uglifyjs": "^0.6.0",
+    "isparta": "^2.2.0",
+    "jshint-stylish": "^1.0.0",
+    "lodash": "^3.6.0",
+    "mkdirp": "^0.5.0",
+    "mocha": "^2.1.0",
+    "run-sequence": "^1.0.2",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.7.0",
+    "vinyl-source-stream": "^1.0.0"
+  },
+  "babelBoilerplateOptions": {
+    "entryFileName": "surfaces",
+    "exportVarName": "Surface",
+    "mochaGlobals": [
+      "stub",
+      "spy",
+      "expect"
+    ]
+  },
+  "dependencies": {
+    "lodash": "^3.6.0",
+    "two-rotations": "0.0.2"
+  }
+}

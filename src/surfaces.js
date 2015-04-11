@@ -9,14 +9,13 @@ import generateVisData from './util/generate-vis-data';
 var surfaceOptions = [
   'tagName', 'fn', 'el',
   'width', 'height',
-  'colorFn',
+  'colorFn', 'strokeColorFn',
   'zoom', 'yaw', 'pitch',
-  'tResolution',
   'xyDomain', 'xyResolution', 'xyScale',
   'yDomain', 'yResolution', 'yScale',
   'xDomain', 'xResolution', 'xScale',
   'range', 'zScale',
-  'maxPitch',
+  'maxPitch'
 ];
 
 // Store a handy reference to the SVG namespace
@@ -30,24 +29,21 @@ class Surface {
     // Pick out the valid options from the passed-in options,
     // then fill in the defaults.
     _.defaults(this, _.pick(options, surfaceOptions), {
+      tagName: 'canvas',
       width: 300,
       height: 300,
       zoom: 1,
-      tagName: 'canvas',
       yaw: 0.5,
-      colorFn() { return '#333'; },
       pitch: 0.5,
-
+      maxPitch: Math.PI / 2,
+      colorFn() { return '#333'; },
+      strokeColorFn() { return 'rgba(0,0,0,0.4)'; },
+      fn: Surface.spacetimeOrigin,
       xyDomain: [-10, 10],
       xyResolution: 1,
       xyScale: 300,
-
-      tResolution: 1,
-
       range: [-10, 10],
-      zScale: 1,
-      fn: Surface.spacetimeOrigin,
-      maxPitch: Math.PI / 2
+      zScale: 1
     });
 
     // Create and set the rotation matrix
@@ -58,28 +54,6 @@ class Surface {
     // then determine if it's an SVG Surface or a Canvas Surface
     this._ensureElement();
     this._setType();
-
-    // Finally, call initialize.
-    this.initialize(...arguments);
-  }
-
-  // A method that can be overwritten to augment
-  // the instantiation of a Surface
-  initialize() {}
-
-  // Generate, and cache, the Surface's data
-  computeData() {
-    this._cache = compute({
-      fn: this.fn,
-      startTime: 0,
-      maxTime: 0,
-      xDomain: this.xDomain || this.xyDomain,
-      xResolution: this.xResolution || this.xyResolution,
-      yDomain: this.yDomain || this.xyDomain,
-      yResolution: this.yResolution || this.xyResolution
-    });
-
-    return this;
   }
 
   // Generate some coordinates for our fn
@@ -201,7 +175,7 @@ class Surface {
       p = a.path;
       context.beginPath();
       context.fillStyle = this.colorFn(a.avg);
-      context.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+      context.strokeStyle = this.strokeColorFn(a.avg);
       context.moveTo(Math.round(p.moveTo[0]), Math.round(p.moveTo[1]));
       context.lineTo(Math.round(p.pointOne[0]), Math.round(p.pointOne[1]));
       context.lineTo(Math.round(p.pointTwo[0]), Math.round(p.pointTwo[1]));
@@ -221,11 +195,12 @@ class Surface {
     el.setAttributeNS(null, attr, val);
   }
 
+  // Empty the canvas
   _clearCanvas(context) {
     context.clearRect(0, 0, this.el.width, this.el.height);
   }
 
-  // Empty out the svg
+  // Empty the svg
   _clearSvg() {
     while (this.el.firstChild) {
       this.el.removeChild(this.el.firstChild);

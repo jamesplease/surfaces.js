@@ -11,12 +11,12 @@ var surfaceOptions = [
   'width', 'height',
   'colorFn',
   'zoom', 'yaw', 'pitch',
-  'tResolution', 'currentFrame',
+  'tResolution',
   'xyDomain', 'xyResolution', 'xyScale',
   'yDomain', 'yResolution', 'yScale',
   'xDomain', 'xResolution', 'xScale',
   'range', 'zScale',
-  'currentFrame', 'maxPitch',
+  'maxPitch',
 ];
 
 // Store a handy reference to the SVG namespace
@@ -43,7 +43,6 @@ class Surface {
       xyScale: 300,
 
       tResolution: 1,
-      currentFrame: 0,
 
       range: [-10, 10],
       zScale: 1,
@@ -72,8 +71,8 @@ class Surface {
   computeData() {
     this._cache = compute({
       fn: this.fn,
-      startTime: this.currentFrame,
-      maxTime: this.currentFrame,
+      startTime: 0,
+      maxTime: 0,
       xDomain: this.xDomain || this.xyDomain,
       xResolution: this.xResolution || this.xyResolution,
       yDomain: this.yDomain || this.xyDomain,
@@ -81,6 +80,19 @@ class Surface {
     });
 
     return this;
+  }
+
+  // Generate some coordinates for our fn
+  _computeData(options = {}) {
+    var { from, to, resolution } = options;
+    return compute({
+      fn: this.fn,
+      from, to, resolution,
+      xDomain: this.xDomain || this.xyDomain,
+      xResolution: this.xResolution || this.xyResolution,
+      yDomain: this.yDomain || this.xyDomain,
+      yResolution: this.yResolution || this.xyResolution
+    });
   }
 
   // Adjust the orientation of the Surface
@@ -94,29 +106,15 @@ class Surface {
   }
 
   // Render the surface into its element
-  renderFrame(frame) {
+  render(options = {}) {
+    var time = options.t || 0;
 
-    frame = typeof frame === 'undefined' ? this.currentFrame : frame;
-    this.currentFrame = frame;
-    var animate = false;
-    var loop = false;
-    var startFrame = frame;
-    var endFrame;
-
-    if (typeof frame === 'object') {
-      animate = true;
-      loop = frame.loop;
-      startFrame = frame.from;
-      endFrame = frame.to;
-    }
-
-    // If there's no cached data, then we must compute it first
-    if (!this._cache) {
-      this.computeData();
-    }
-
-    // Get the data for frame that we're rendering
-    var data = this._cache[frame];
+    // Calculate the data for this moment in time
+    var data = this._computeData({
+      from: time,
+      to: time,
+      resolution: 1
+    })[0];
 
     // Map that data to the viewport
     var mappedData = mapDataToViewport({
@@ -144,6 +142,7 @@ class Surface {
       pitch: this.pitch
     });
 
+    // Render canvas or svg, based on Surface type
     if (this._type === 'canvas') {
       this._renderCanvasSurface(visData);
     } else {

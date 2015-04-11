@@ -3,8 +3,8 @@ import LinearScale from './linear-scale';
 // Generate spacetime coordinates, represented as a deeply-nested array,
 // from the Surface's `fn`
 export default function(options = {}) {
-  var maxTime = options.maxTime !== undefined ? options.maxTime : 0;
-  var { yDomain, xDomain, xResolution, yResolution, startTime } = options;
+  var to = options.to !== undefined ? options.to : 0;
+  var { yDomain, xDomain, xResolution, yResolution, from } = options;
 
   var xMax = (xDomain[1] - xDomain[0]) / xResolution;
   var yMax = (yDomain[1] - yDomain[0]) / yResolution;
@@ -24,7 +24,7 @@ export default function(options = {}) {
 
   // Loop through all of the time values
   // specified to generate each frame
-  for (var t = startTime; t <= maxTime; t++) {
+  for (var t = from; t <= to; t++) {
     var tValues = [];
     coordinates.push(tValues);
 

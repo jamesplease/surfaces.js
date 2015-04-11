@@ -39,7 +39,7 @@ class Surface {
       pitch: 0.5,
 
       xyDomain: [-10, 10],
-      xyResolution: 30,
+      xyResolution: 1,
       xyScale: 300,
 
       tResolution: 1,
@@ -126,6 +126,8 @@ class Surface {
       yScale: this.yScale || this.xyScale,
       xResolution: this.xResolution || this.xyResolution,
       yResolution: this.yResolution || this.xyResolution,
+      xDomain: this.xDomain || this.xyDomain,
+      yDomain: this.yDomain || this.xyDomain,
       zScale: this.zScale,
       zoom: this.zoom,
       rotationMatrix: this._rotationMatrix

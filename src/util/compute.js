@@ -6,13 +6,16 @@ export default function(options = {}) {
   var maxTime = options.maxTime !== undefined ? options.maxTime : 0;
   var { yDomain, xDomain, xResolution, yResolution, startTime } = options;
 
+  var xMax = (xDomain[1] - xDomain[0]) / xResolution;
+  var yMax = (yDomain[1] - yDomain[0]) / yResolution;
+
   var xLinearScale = new LinearScale({
-    domain: [0, xResolution],
+    domain: [0, xMax],
     range: xDomain
   });
 
   var yLinearScale = new LinearScale({
-    domain: [0, yResolution],
+    domain: [0, yMax],
     range: yDomain
   });
 
@@ -26,12 +29,12 @@ export default function(options = {}) {
     coordinates.push(tValues);
 
     // First loop x,
-    for (var x = 0; x <= xResolution; x++) {
+    for (var x = 0; x <= xMax; x++) {
       var xValues = [];
       tValues.push(xValues);
 
       // then loop y,
-      for (var y = 0; y <= yResolution; y++) {
+      for (var y = 0; y <= yMax; y++) {
 
         // and finally call the function, passing
         // the x, y, and t values for this point

@@ -9,9 +9,13 @@ export default function(options) {
     data, zoom, rotationMatrix,
     range, zScale,
     xResolution, xScale,
-    yResolution, yScale
+    yResolution, yScale,
+    xDomain, yDomain
   } = options;
   var orientedPoint;
+
+  var xMax = (xDomain[1] - xDomain[0]) / xResolution;
+  var yMax = (yDomain[1] - yDomain[0]) / yResolution;
 
   var zLinearScale = new LinearScale({
     domain: range,
@@ -19,12 +23,12 @@ export default function(options) {
   });
 
   var xLinearScale = new LinearScale({
-    domain: [0, xResolution],
+    domain: [0, xMax],
     range: [-xScale/2, xScale/2]
   });
 
   var yLinearScale = new LinearScale({
-    domain: [0, yResolution],
+    domain: [0, yMax],
     range: [-yScale/2, yScale/2]
   });
 

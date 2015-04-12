@@ -1,0 +1,18 @@
+# Site settings
+title: Surfaces.js
+tagline: Visualize multivariable functions in the browser
+description: Visualize multivariable functions in the browser
+baseurl: "/surfaces.js" # the subpath of your site, e.g. /blog/
+url: "https://jmeas.github.com" # the base hostname & protocol for your site
+github_username: jmeas
+
+# Build settings
+markdown: redcarpet
+highlighter: pygments
+
+redcarpet:
+  extensions: ['tables', 'no_intra_emphasis', 'autolink', 'with_toc_data']
+
+# Blog Settings
+permalink: /blog/:year/:month/:day/:title
+paginate: 1

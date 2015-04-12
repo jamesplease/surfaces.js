@@ -1,0 +1,3 @@
+!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):t.TwoRotations=e()}(this,function(){"use strict";function t(t,e){var n=Math.cos(e),o=Math.sin(e),i=Math.cos(t),r=Math.sin(t);return[[i,0,r],[r*o,n,-o*i],[-r*n,o,n*i]]}function e(t,e){return[t[0]*e[0][0]+t[1]*e[0][1]+t[2]*e[0][2],t[0]*e[1][0]+t[1]*e[1][1]+t[2]*e[1][2],t[0]*e[2][0]+t[1]*e[2][1]+t[2]*e[2][2]]}var n=t,o={rotate:e,generateMatrix:n},i=o;return i});
+
+window.twoRotations = window.TwoRotations;

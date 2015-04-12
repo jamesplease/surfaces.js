@@ -29,6 +29,10 @@ html, body {
   vertical-align: middle;
 }
 
+.social-buttons {
+  margin-bottom: 20px;
+}
+
 .subheader {
   background-color: #f7f7f7;
   border-bottom: 1px solid #ececec;
@@ -44,6 +48,24 @@ html, body {
   font-weight: normal;
   margin: 0;
   padding: 0;
+}
+
+h3 {
+  font-size: 19px;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  color: #AB81D6;
+}
+
+#hero-surface {
+  width: 750px;
+  height: 340px;
+}
+
+#hero-surface path {
+  stroke-width: 1px;
+  stroke: rgba(0,0,0,.2);
 }
 
 footer {

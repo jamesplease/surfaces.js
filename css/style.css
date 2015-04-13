@@ -68,6 +68,19 @@ h3 {
   stroke: rgba(0,0,0,.2);
 }
 
+.drag-msg {
+  opacity: 0;
+  transition: opacity 0.5s;
+  width: 680px;
+  color: #999;
+  font-size: 13px;
+  text-align: right;
+}
+
+.drag-msg.show {
+  opacity: 1;
+}
+
 footer {
   margin-top: 20px;
   padding-top: 20px;

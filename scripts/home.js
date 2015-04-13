@@ -99,12 +99,14 @@
   var yawDiff = finalYaw - initialYaw;
   var pitchDiff = finalPitch - initialPitch;
 
+  var heroSurface;
+
   // Create, then show, the heroSurface
   function showHeroSurface() {
-    var heroSurface = new Surface({
+    heroSurface = new Surface({
       el: document.getElementById('hero-surface'),
       fn: function(x, y, t) {
-        return Math.pow(Math.sin(t/60 * Math.PI/2), 3) * gaussians.reduce(function(a, g) {
+        return Math.pow(Math.sin(t/50 * Math.PI/2), 3) * gaussians.reduce(function(a, g) {
           return a + gaussian({
             x: x,
             y: y,
@@ -138,7 +140,10 @@
     function loop(cb, options) {
       currentFrame++;
       if (currentFrame > options.to) {
-        if (options.once) { return; }
+        if (options.once) {
+          makeDraggable();
+          return;
+        }
         currentFrame = 0;
       }
 
@@ -151,8 +156,8 @@
 
     // Render our surface based on an iterator, i
     function render(i) {
-      var yaw = initialYaw + (yawDiff * i/60);
-      var pitch = initialPitch + (pitchDiff * i/60);
+      var yaw = initialYaw + (yawDiff * i/50);
+      var pitch = initialPitch + (pitchDiff * i/50);
       heroSurface
         .orient({
           pitch: pitch,
@@ -165,10 +170,58 @@
 
     loop(render, {
       from: 0,
-      to: 60,
+      to: 50,
       once: true
     });
   }
 
-  $(showHeroSurface);
+  $(function() {
+
+    // Show the surface...
+    showHeroSurface();
+  });
+
+  function makeDraggable() {
+    document.getElementsByClassName('drag-msg')[0].className = 'drag-msg show';
+    heroSurface.el.addEventListener('mousedown', setDrag);
+    heroSurface.el.addEventListener('mouseup', endDrag);
+    heroSurface.el.addEventListener('mousemove', moveCamera);
+  }
+
+  // How much moving the mouse scales the orientation
+  var dragScale = 120;
+
+  // Whether or not we're dragging
+  var dragging = false;
+
+  // The last position of the mouse
+  var initialMousePosition;
+
+  var yaw, pitch;
+  function setDrag(e) {
+    dragging = true;
+    initialMousePosition = [e.clientX, e.clientY];
+    yaw = heroSurface.yaw;
+    pitch = heroSurface.pitch;
+  }
+
+  function endDrag() {
+    dragging = false;
+  }
+
+  function moveCamera(e) {
+    if(!dragging) { return; }
+
+    // Figure out how far the mouse has moved in
+    // each direction, and scale it appropriately
+    var currentMousePosition = [e.clientX, e.clientY];
+    var deltaYaw = (currentMousePosition[0] - initialMousePosition[0]) / dragScale;
+    var deltaPitch = (currentMousePosition[1] - initialMousePosition[1]) / dragScale;
+
+    // Finally, update our rotated surface
+    heroSurface.orient({
+      yaw: yaw - deltaYaw,
+      pitch: pitch + deltaPitch
+    }).render({t: 50});
+  }
 })();

@@ -104,7 +104,7 @@
     var heroSurface = new Surface({
       el: document.getElementById('hero-surface'),
       fn: function(x, y, t) {
-        return Math.pow(Math.sin(t/40 * Math.PI/2), 3) * gaussians.reduce(function(a, g) {
+        return Math.pow(Math.sin(t/60 * Math.PI/2), 3) * gaussians.reduce(function(a, g) {
           return a + gaussian({
             x: x,
             y: y,
@@ -151,8 +151,8 @@
 
     // Render our surface based on an iterator, i
     function render(i) {
-      var yaw = initialYaw + (yawDiff * i/40);
-      var pitch = initialPitch + (pitchDiff * i/40);
+      var yaw = initialYaw + (yawDiff * i/60);
+      var pitch = initialPitch + (pitchDiff * i/60);
       heroSurface
         .orient({
           pitch: pitch,
@@ -165,7 +165,7 @@
 
     loop(render, {
       from: 0,
-      to: 40,
+      to: 60,
       once: true
     });
   }

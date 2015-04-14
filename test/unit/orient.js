@@ -1,7 +1,7 @@
 import Surface from '../../src/surfaces';
 
 var surface;
-describe('Orient()', () => {
+describe('orient()', () => {
   describe('when calling orient()', () => {
     beforeEach(() => {
       surface = new Surface({

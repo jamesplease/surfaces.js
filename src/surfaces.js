@@ -4,20 +4,6 @@ import compute from './util/compute';
 import mapDataToViewport from './util/map-data-to-viewport';
 import generateVisData from './util/generate-vis-data';
 
-// The options that can be passed into
-// a new Surface instance
-var surfaceOptions = [
-  'tagName', 'fn', 'el',
-  'width', 'height',
-  'colorFn', 'strokeColorFn',
-  'zoom', 'yaw', 'pitch',
-  'xyDomain', 'xyResolution', 'xyScale',
-  'yDomain', 'yResolution', 'yScale',
-  'xDomain', 'xResolution', 'xScale',
-  'range', 'zScale',
-  'maxPitch'
-];
-
 // Store a handy reference to the SVG namespace
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -28,7 +14,7 @@ class Surface {
 
     // Pick out the valid options from the passed-in options,
     // then fill in the defaults.
-    _.defaults(this, _.pick(options, surfaceOptions), {
+    _.defaults(this, _.pick(options, Surface.surfaceOptions), {
       tagName: 'canvas',
       width: 300,
       height: 300,
@@ -54,19 +40,6 @@ class Surface {
     // then determine if it's an SVG Surface or a Canvas Surface
     this._ensureElement();
     this._setType();
-  }
-
-  // Generate some coordinates for our fn
-  _computeData(options = {}) {
-    var { from, to, resolution } = options;
-    return compute({
-      fn: this.fn,
-      from, to, resolution,
-      xDomain: this.xDomain || this.xyDomain,
-      xResolution: this.xResolution || this.xyResolution,
-      yDomain: this.yDomain || this.xyDomain,
-      yResolution: this.yResolution || this.xyResolution
-    });
   }
 
   // Adjust the orientation of the Surface
@@ -124,6 +97,19 @@ class Surface {
     }
 
     return this;
+  }
+
+  // Generate some coordinates for our fn
+  _computeData(options = {}) {
+    var { from, to, resolution } = options;
+    return compute({
+      fn: this.fn,
+      from, to, resolution,
+      xDomain: this.xDomain || this.xyDomain,
+      xResolution: this.xResolution || this.xyResolution,
+      yDomain: this.yDomain || this.xyDomain,
+      yResolution: this.yResolution || this.xyResolution
+    });
   }
 
   // Set the rotation matrix
@@ -233,5 +219,19 @@ class Surface {
 Surface.spacetimeOrigin = function() {
   return [[[0]]];
 };
+
+// The options that can be passed into
+// a new Surface instance
+Surface.surfaceOptions = [
+  'tagName', 'fn', 'el',
+  'width', 'height',
+  'colorFn', 'strokeColorFn',
+  'zoom', 'yaw', 'pitch',
+  'xyDomain', 'xyResolution', 'xyScale',
+  'yDomain', 'yResolution', 'yScale',
+  'xDomain', 'xResolution', 'xScale',
+  'range', 'zScale',
+  'maxPitch'
+];
 
 export default Surface;

@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import twoRotations from 'two-rotations';
 import compute from './util/compute';
-import mapDataToViewport from './util/map-data-to-viewport';
-import generateVisData from './util/generate-vis-data';
+import generateVisData from './util/vis/generate-vis-data';
 
 // Store a handy reference to the SVG namespace
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -63,30 +62,22 @@ class Surface {
       resolution: 1
     })[0];
 
-    // Map that data to the viewport
-    var mappedData = mapDataToViewport({
-      data: data,
+    // Generate the data necessary to visualize the surface
+    var visData = generateVisData({
+      data,
+      height: this.height,
+      width: this.width,
       range: this.range,
+      zScale: this.zScale,
+      pitch: this.pitch,
       xScale: this.xScale || this.xyScale,
       yScale: this.yScale || this.xyScale,
       xResolution: this.xResolution || this.xyResolution,
       yResolution: this.yResolution || this.xyResolution,
       xDomain: this.xDomain || this.xyDomain,
       yDomain: this.yDomain || this.xyDomain,
-      zScale: this.zScale,
       zoom: this.zoom,
       rotationMatrix: this._rotationMatrix
-    });
-
-    // Generate the data necessary to visualize the surface
-    var visData = generateVisData({
-      originalData: data,
-      data: mappedData,
-      height: this.height,
-      width: this.width,
-      range: this.range,
-      zScale: this.zScale,
-      pitch: this.pitch
     });
 
     // Render canvas or svg, based on Surface type

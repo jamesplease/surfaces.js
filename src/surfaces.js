@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import twoRotations from 'two-rotations';
 import compute from './util/compute';
-import generateVisData from './util/vis/generate-vis-data';
+import generateVisData from './util/generate-vis-data';
 
 // Store a handy reference to the SVG namespace
 const SVG_NS = 'http://www.w3.org/2000/svg';

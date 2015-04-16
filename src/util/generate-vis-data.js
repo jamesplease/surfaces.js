@@ -1,5 +1,5 @@
 import visData from './vis-data';
-import LinearScale from '../linear-scale';
+import LinearScale from './linear-scale';
 import twoRotations from 'two-rotations';
 
 // Generate the data necessary to render the visualization. Returns

@@ -204,25 +204,27 @@ class Surface {
       L${path.pointTwo[0]}, ${path.pointTwo[1]}
       L${path.pointThree[0]}, ${path.pointThree[1]}`;
   }
+
+  // Return the spacetime origin coordinate: [0, 0, 0, 0]
+  static spacetimeOrigin() {
+    return [[[0]]];
+  }
+
+  // The options that can be passed into
+  // a new Surface instance
+  static get surfaceOptions() {
+    return [
+      'tagName', 'fn', 'el',
+      'width', 'height',
+      'colorFn', 'strokeColorFn',
+      'zoom', 'yaw', 'pitch',
+      'xyDomain', 'xyResolution', 'xyScale',
+      'yDomain', 'yResolution', 'yScale',
+      'xDomain', 'xResolution', 'xScale',
+      'range', 'zScale',
+      'maxPitch'
+    ];
+  }
 }
-
-// Return the spacetime origin coordinate: [0, 0, 0, 0]
-Surface.spacetimeOrigin = function() {
-  return [[[0]]];
-};
-
-// The options that can be passed into
-// a new Surface instance
-Surface.surfaceOptions = [
-  'tagName', 'fn', 'el',
-  'width', 'height',
-  'colorFn', 'strokeColorFn',
-  'zoom', 'yaw', 'pitch',
-  'xyDomain', 'xyResolution', 'xyScale',
-  'yDomain', 'yResolution', 'yScale',
-  'xDomain', 'xResolution', 'xScale',
-  'range', 'zScale',
-  'maxPitch'
-];
 
 export default Surface;

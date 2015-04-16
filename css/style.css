@@ -63,6 +63,10 @@ h3 {
   height: 340px;
 }
 
+#hero-surface.move {
+  cursor: move;
+}
+
 #hero-surface path {
   stroke-width: 1px;
   stroke: rgba(0,0,0,.2);

@@ -182,6 +182,7 @@
   });
 
   function makeDraggable() {
+    heroSurface.el.className = 'move';
     document.getElementsByClassName('drag-msg')[0].className = 'drag-msg show';
     heroSurface.el.addEventListener('mousedown', setDrag);
     heroSurface.el.addEventListener('mouseup', endDrag);

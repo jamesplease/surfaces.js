@@ -1,22 +1,7 @@
 import _ from 'lodash';
 import twoRotations from 'two-rotations';
 import compute from './util/compute';
-import mapDataToViewport from './util/map-data-to-viewport';
 import generateVisData from './util/generate-vis-data';
-
-// The options that can be passed into
-// a new Surface instance
-var surfaceOptions = [
-  'tagName', 'fn', 'el',
-  'width', 'height',
-  'colorFn', 'strokeColorFn',
-  'zoom', 'yaw', 'pitch',
-  'xyDomain', 'xyResolution', 'xyScale',
-  'yDomain', 'yResolution', 'yScale',
-  'xDomain', 'xResolution', 'xScale',
-  'range', 'zScale',
-  'maxPitch'
-];
 
 // Store a handy reference to the SVG namespace
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -28,7 +13,7 @@ class Surface {
 
     // Pick out the valid options from the passed-in options,
     // then fill in the defaults.
-    _.defaults(this, _.pick(options, surfaceOptions), {
+    _.defaults(this, _.pick(options, Surface.surfaceOptions), {
       tagName: 'canvas',
       width: 300,
       height: 300,
@@ -56,19 +41,6 @@ class Surface {
     this._setType();
   }
 
-  // Generate some coordinates for our fn
-  _computeData(options = {}) {
-    var { from, to, resolution } = options;
-    return compute({
-      fn: this.fn,
-      from, to, resolution,
-      xDomain: this.xDomain || this.xyDomain,
-      xResolution: this.xResolution || this.xyResolution,
-      yDomain: this.yDomain || this.xyDomain,
-      yResolution: this.yResolution || this.xyResolution
-    });
-  }
-
   // Adjust the orientation of the Surface
   orient(orientation) {
     _.extend(this, _.pick(orientation, ['yaw', 'pitch']));
@@ -90,30 +62,22 @@ class Surface {
       resolution: 1
     })[0];
 
-    // Map that data to the viewport
-    var mappedData = mapDataToViewport({
-      data: data,
+    // Generate the data necessary to visualize the surface
+    var visData = generateVisData({
+      data,
+      height: this.height,
+      width: this.width,
       range: this.range,
+      zScale: this.zScale,
+      pitch: this.pitch,
       xScale: this.xScale || this.xyScale,
       yScale: this.yScale || this.xyScale,
       xResolution: this.xResolution || this.xyResolution,
       yResolution: this.yResolution || this.xyResolution,
       xDomain: this.xDomain || this.xyDomain,
       yDomain: this.yDomain || this.xyDomain,
-      zScale: this.zScale,
       zoom: this.zoom,
       rotationMatrix: this._rotationMatrix
-    });
-
-    // Generate the data necessary to visualize the surface
-    var visData = generateVisData({
-      originalData: data,
-      data: mappedData,
-      height: this.height,
-      width: this.width,
-      range: this.range,
-      zScale: this.zScale,
-      pitch: this.pitch
     });
 
     // Render canvas or svg, based on Surface type
@@ -124,6 +88,19 @@ class Surface {
     }
 
     return this;
+  }
+
+  // Generate some coordinates for our fn
+  _computeData(options = {}) {
+    var { from, to, resolution } = options;
+    return compute({
+      fn: this.fn,
+      from, to, resolution,
+      xDomain: this.xDomain || this.xyDomain,
+      xResolution: this.xResolution || this.xyResolution,
+      yDomain: this.yDomain || this.xyDomain,
+      yResolution: this.yResolution || this.xyResolution
+    });
   }
 
   // Set the rotation matrix
@@ -227,11 +204,27 @@ class Surface {
       L${path.pointTwo[0]}, ${path.pointTwo[1]}
       L${path.pointThree[0]}, ${path.pointThree[1]}`;
   }
-}
 
-// Return the spacetime origin coordinate: [0, 0, 0, 0]
-Surface.spacetimeOrigin = function() {
-  return [[[0]]];
-};
+  // Return the spacetime origin coordinate: [0, 0, 0, 0]
+  static spacetimeOrigin() {
+    return [[[0]]];
+  }
+
+  // The options that can be passed into
+  // a new Surface instance
+  static get surfaceOptions() {
+    return [
+      'tagName', 'fn', 'el',
+      'width', 'height',
+      'colorFn', 'strokeColorFn',
+      'zoom', 'yaw', 'pitch',
+      'xyDomain', 'xyResolution', 'xyScale',
+      'yDomain', 'yResolution', 'yScale',
+      'xDomain', 'xResolution', 'xScale',
+      'range', 'zScale',
+      'maxPitch'
+    ];
+  }
+}
 
 export default Surface;
